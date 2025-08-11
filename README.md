@@ -51,10 +51,11 @@ wsl --install -d Ubuntu
 ### Installing
 
 Follow these steps to install Docker Laragon:
-1. Open Your Ubuntu terminal (WSL) with Run as Administrator
+1. Open Your Ubuntu terminal (WSL)
 ```
 - Search Ubuntu in taskbar Windows
-- Click Run as Administrator
+- or
+- Open your terminal and type `wsl -d Ubuntu`
 ```
 
 2. Clone the docker-laragon:
