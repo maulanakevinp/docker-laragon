@@ -15,7 +15,6 @@ if [ "$use_proxy" == "y" ]; then
     exit 1
   fi
   echo "=== Membuat konfigurasi Nginx untuk $domain ==="
-  mkdir -p ./nginx/sites-enabled
   echo 'server{
     listen 80;
     server_name '$domain';
@@ -65,7 +64,6 @@ else
       exit 1
   fi
   echo "=== Membuat konfigurasi Nginx untuk $domain ==="
-  mkdir -p ./nginx/sites-enabled
   echo 'server{
       listen 80;
       server_name '$domain';
@@ -105,7 +103,6 @@ else
 fi
 
 echo "=== Membuat sertifikat SSL untuk $domain ==="
-mkdir -p ./certs
 
 # Generate private key & certificate
 openssl req -x509 -nodes -days 3650 -newkey rsa:2048 \
