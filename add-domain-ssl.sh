@@ -112,7 +112,7 @@ openssl req -x509 -nodes -days 3650 -newkey rsa:2048 \
   -addext "subjectAltName=DNS:$domain"
   
 echo "=== Menambahkan domain ke Windows hosts ==="
-powershell.exe -Command "Start-Process powershell -Verb RunAs -ArgumentList 'Add-Content -Path \"C:\\Windows\\System32\\drivers\\etc\\hosts\" -Value \"``r``n127.0.0.1 $domain\"'"
+powershell.exe -ExecutionPolicy Bypass -File add-domain.ps1 -Domain $domain
 
 echo "=== Mengimpor sertifikat ke Trusted Root Windows ==="
 powershell.exe -Command "Start-Process powershell -Verb RunAs -ArgumentList 'Import-Certificate -FilePath \"$(wslpath -w "./certs/$domain.crt")\" -CertStoreLocation Cert:\\LocalMachine\\Root'"
