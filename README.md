@@ -142,6 +142,7 @@ cd ~/docker-laragon
 - [PHP](https://www.php.net/) - Server-side scripting language (php-8.0|8.1|8.2)
 - [Composer](https://getcomposer.org/) - Dependency Manager for PHP
 - [MySQL](https://www.mysql.com/) - Database Management System
+- [MSSQL](https://www.microsoft.com/en-us/sql-server/sql-server-downloads) - Microsoft SQL Server
 - [phpMyAdmin](https://www.phpmyadmin.net/) - Database Administration Tool
 - [Mailhog](https://github.com/mailhog/MailHog) - Email testing tool
 
