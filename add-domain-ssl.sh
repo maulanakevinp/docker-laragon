@@ -5,7 +5,7 @@ if [ "$domain" == "" ]; then
   echo "Domain cannot be empty"
   exit 1
 fi
-echo -n "do you want to use proxy (y/n): "
+echo -n "Do you want to use proxy (y/n): "
 read use_proxy
 if [ "$use_proxy" == "y" ]; then
   echo -n "proxy url (ex: http://host.docker.internal:8101): "
@@ -14,7 +14,7 @@ if [ "$use_proxy" == "y" ]; then
     echo "Proxy URL cannot be empty"
     exit 1
   fi
-  echo "=== Membuat konfigurasi Nginx untuk $domain ==="
+  echo "=== Creating Nginx configuration for $domain ==="
   echo 'server{
     listen 80;
     server_name '$domain';
@@ -51,19 +51,19 @@ if [ "$use_proxy" == "y" ]; then
   }
   ' | tee ./nginx/sites-enabled/$domain.conf
 else
-  echo -n "root directory (ex: /var/www/sso/public): "
+  echo -n "Root directory (ex: /var/www/sso/public): "
   read root
     if [ "$root" == "" ]; then
         echo "Root directory cannot be empty"
         exit 1
     fi
-  echo -n "php version (ex: 80/81/82) :"
+  echo -n "PHP version (ex: 80/81/82) :"
   read php_version
   if [ "$php_version" == "" ]; then
       echo "PHP version cannot be empty"
       exit 1
   fi
-  echo "=== Membuat konfigurasi Nginx untuk $domain ==="
+  echo "=== Creating nginx configuration for $domain ==="
   echo 'server{
       listen 80;
       server_name '$domain';
@@ -102,7 +102,7 @@ else
   }' | tee ./nginx/sites-enabled/$domain.conf
 fi
 
-echo "=== Membuat sertifikat SSL untuk $domain ==="
+echo "=== Creating SSL certificate for $domain ==="
 
 # Generate private key & certificate
 openssl req -x509 -nodes -days 3650 -newkey rsa:2048 \
@@ -111,12 +111,13 @@ openssl req -x509 -nodes -days 3650 -newkey rsa:2048 \
   -subj "/C=ID/ST=JawaBarat/L=Depok/O=LocalDev/OU=IT/CN=$domain" \
   -addext "subjectAltName=DNS:$domain"
   
-echo "=== Menambahkan domain ke Windows hosts ==="
+echo "=== Adding domain to Windows hosts ==="
 powershell.exe -ExecutionPolicy Bypass -File add-domain.ps1 -Domain $domain
 
-echo "=== Mengimpor sertifikat ke Trusted Root Windows ==="
+echo "=== Importing certificate to Windows Trusted Root ==="
 powershell.exe -Command "Start-Process powershell -Verb RunAs -ArgumentList 'Import-Certificate -FilePath \"$(wslpath -w "./certs/$domain.crt")\" -CertStoreLocation Cert:\\LocalMachine\\Root'"
 
-echo "=== Selesai! Domain $domain siap digunakan dengan SSL ==="
-
+echo "=== Restarting Nginx ==="
 docker restart nginx
+
+echo "=== Done! Domain $domain is ready to use with SSL ==="
