@@ -67,7 +67,7 @@ services:
       SA_PASSWORD: "${SA_PASSWORD:-YouShallNotP4ss!}"
     volumes:
       - ./mssql_data:/var/opt/mssql
-    restart: unless-stopped
+    restart: always
 
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
