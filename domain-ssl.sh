@@ -8,41 +8,41 @@ for dir in /home/ictui/public_html/*; do
     fi
     echo "=== Creating nginx configuration for $project.test ==="
     echo 'server{
-        listen 80;
-        server_name '$project'.test;
-        return 301 https://$host$request_uri;
+    listen 80;
+    server_name '$project'.test;
+    return 301 https://$host$request_uri;
+}
+
+server {
+    listen 443 ssl;
+    server_name '$project'.test;
+    root /var/www/'$project'/public;
+
+    ssl_certificate     /etc/nginx/certs/'$project'.test.crt;
+    ssl_certificate_key /etc/nginx/certs/'$project'.test.key;
+
+    index index.php index.html index.htm;
+    charset utf-8;
+
+    location / {
+        try_files $uri $uri/ /index.php?$query_string;
     }
 
-    server {
-        listen 443 ssl;
-        server_name '$project'.test;
-        root /var/www/'$project'/public;
+    location = /favicon.ico { access_log off; log_not_found off; }
+    location = /robots.txt  { access_log off; log_not_found off; }
 
-        ssl_certificate     /etc/nginx/certs/'$project'.test.crt;
-        ssl_certificate_key /etc/nginx/certs/'$project'.test.key;
+    error_page 404 /index.php;
+    
+    location ~ \.php$ {
+        fastcgi_pass '$php_version':9000;
+        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+        include fastcgi_params;
+    }
 
-        index index.php index.html index.htm;
-        charset utf-8;
-
-        location / {
-            try_files $uri $uri/ /index.php?$query_string;
-        }
-
-        location = /favicon.ico { access_log off; log_not_found off; }
-        location = /robots.txt  { access_log off; log_not_found off; }
-
-        error_page 404 /index.php;
-        
-        location ~ \.php$ {
-            fastcgi_pass '$php_version':9000;
-            fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
-            include fastcgi_params;
-        }
-
-        location ~ /\.ht {
-            deny all;
-        }
-    }' | tee ./nginx/sites-enabled/$project.test.conf
+    location ~ /\.ht {
+        deny all;
+    }
+}' | tee ./nginx/sites-enabled/$project.test.conf
 
     echo "=== Creating SSL certificate for $project.test ==="
     
