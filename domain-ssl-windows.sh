@@ -1,5 +1,5 @@
 for dir in /home/ictui/public_html/*; do
-  if [ -d "$dir" ]; then
+  if [ -d "$dir/public" ]; then
     project=$(basename "$dir")
     if [ -f "/home/ictui/public_html/$project/.php-version" ]; then
         php_version=$(cat "/home/ictui/public_html/$project/.php-version")

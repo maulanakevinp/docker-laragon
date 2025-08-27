@@ -1,7 +1,7 @@
-for dir in /home/ictui/public_html/*; do
+for dir in ~/public_html/*; do
   if [ -d "$dir" ]; then
     project=$(basename "$dir")
-    compose_file="/home/ictui/public_html/$project/docker-compose.yml"
+    compose_file="~/public_html/$project/docker-compose.yml"
     if [ -f "$compose_file" ]; then
         docker-compose -f "$compose_file" config > /tmp/expanded.yml
         port=$(yq '.services | to_entries[] | select(.value.ports) | .value.ports[0].published' /tmp/expanded.yml | sed 's/"//g')
