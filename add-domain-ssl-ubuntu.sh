@@ -26,9 +26,9 @@ if [ "$use_proxy" == "y" ]; then
     listen 80;
     server_name '$domain';
     return 301 https://$host$request_uri;
-  }
+}
 
-  server {
+server {
     listen 443 ssl;
     server_name '$domain';
 
@@ -36,27 +36,26 @@ if [ "$use_proxy" == "y" ]; then
     ssl_certificate_key /etc/nginx/certs/'$domain'+4-key.pem;
 
     location ^~ / {
-      proxy_pass '$proxy_url';
-      proxy_set_header Host $http_host;
-      proxy_set_header X-Real-IP $remote_addr;
-      proxy_set_header X-Real-Port $remote_port;
-      proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-      proxy_set_header REMOTE-HOST $remote_addr;
-      proxy_connect_timeout 60s;
-      proxy_send_timeout 600s;
-      proxy_read_timeout 600s;
-      proxy_http_version 1.1;
-      proxy_set_header Upgrade $http_upgrade;
-      proxy_set_header Connection "upgrade";
-      proxy_set_header X-Forwarded-Proto https;
-      proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_pass '$proxy_url';
+        proxy_set_header Host $http_host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Real-Port $remote_port;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header REMOTE-HOST $remote_addr;
+        proxy_connect_timeout 60s;
+        proxy_send_timeout 600s;
+        proxy_read_timeout 600s;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "upgrade";
+        proxy_set_header X-Forwarded-Proto https;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
     }
     
     location ~ /\.ht {
-      deny all;
+        deny all;
     }
-  }
-  ' | tee ./nginx/sites-enabled/$domain.conf
+}' | tee ./nginx/sites-enabled/$domain.conf
 else
   echo -n "Root directory (ex: /var/www/sso/public): "
   read root
