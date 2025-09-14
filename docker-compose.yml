@@ -97,4 +97,14 @@ services:
       - "${REDIS_PORT:-6379}:6379"
     container_name: redis
 
+  soketi:
+    image: quay.io/soketi/soketi:latest
+    container_name: soketi
+    restart: unless-stopped
+    ports:
+      - "${SOKETI_PORT:-6001}:6001"
+      - "9601:9601"
+    volumes:
+      - ./soketi.json:/etc/soketi.json
+    command: ["start", "--config=/etc/soketi.json"]
 name: docker-laragon
