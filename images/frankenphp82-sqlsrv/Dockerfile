@@ -52,9 +52,9 @@ RUN cp $PHP_INI_DIR/php.ini-production $PHP_INI_DIR/php.ini
 # Override upload_max_filesize and post_max_size
 RUN echo "upload_max_filesize=100M" > $PHP_INI_DIR/conf.d/custom.ini && \
     echo "post_max_size=100M" >> $PHP_INI_DIR/conf.d/custom.ini && \
-    echo "memory_limit=512M" >> $PHP_INI_DIR/conf.d/custom.ini && \
-    echo "max_execution_time=300" >> $PHP_INI_DIR/conf.d/custom.ini && \
-    echo "max_input_time=300" >> $PHP_INI_DIR/conf.d/custom.ini && \
+    echo "memory_limit=1024M" >> $PHP_INI_DIR/conf.d/custom.ini && \
+    echo "max_execution_time=360" >> $PHP_INI_DIR/conf.d/custom.ini && \
+    echo "max_input_time=360" >> $PHP_INI_DIR/conf.d/custom.ini && \
     echo "max_input_vars=5000000" >> $PHP_INI_DIR/conf.d/custom.ini && \
     echo "date.timezone=Asia/Jakarta" >> $PHP_INI_DIR/conf.d/custom.ini
 
