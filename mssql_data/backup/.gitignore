@@ -1,3 +1,4 @@
 *
 !restore_all_databases.sql
+!restore-bak.sql
 !.gitignore
