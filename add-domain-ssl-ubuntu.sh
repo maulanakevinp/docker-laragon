@@ -78,41 +78,42 @@ else
 
   echo "=== Creating nginx configuration for $domain ==="
   echo 'server{
-      listen 80;
-      server_name '$domain';
-      return 301 https://$host$request_uri;
-  }
+    listen 80;
+    server_name '$domain';
+    return 301 https://$host$request_uri;
+}
 
-  server {
-      listen 443 ssl;
-      server_name '$domain';
-      root '$root';
+server {
+    listen 443 ssl;
+    server_name '$domain';
+    root '$root';
 
-      ssl_certificate     /etc/nginx/certs/'$domain'.crt;
-      ssl_certificate_key /etc/nginx/certs/'$domain'.key;
+    ssl_certificate     /etc/nginx/certs/'$domain'+4.pem;
+    ssl_certificate_key /etc/nginx/certs/'$domain'+4-key.pem;
 
-      index index.php index.html index.htm;
-      charset utf-8;
 
-      location / {
-          try_files $uri $uri/ /index.php?$query_string;
-      }
+    index index.php index.html index.htm;
+    charset utf-8;
 
-      location = /favicon.ico { access_log off; log_not_found off; }
-      location = /robots.txt  { access_log off; log_not_found off; }
+    location / {
+        try_files $uri $uri/ /index.php?$query_string;
+    }
 
-      error_page 404 /index.php;
-      
-      location ~ \.php$ {
-          fastcgi_pass php'$php_version':9000;
-          fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
-          include fastcgi_params;
-      }
+    location = /favicon.ico { access_log off; log_not_found off; }
+    location = /robots.txt  { access_log off; log_not_found off; }
 
-      location ~ /\.ht {
-          deny all;
-      }
-  }' | tee ./nginx/sites-enabled/$domain.conf
+    error_page 404 /index.php;
+    
+    location ~ \.php$ {
+        fastcgi_pass php'$php_version':9000;
+        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+        include fastcgi_params;
+    }
+
+    location ~ /\.ht {
+        deny all;
+    }
+}' | tee ./nginx/sites-enabled/$domain.conf
 fi
 
 echo "=== Tambahkan domain ke hosts ==="
