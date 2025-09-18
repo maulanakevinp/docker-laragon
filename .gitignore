@@ -1,2 +1,3 @@
 .env
 soketi.json
+docker-compose.override.yml
