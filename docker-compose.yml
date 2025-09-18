@@ -34,6 +34,15 @@ services:
     volumes:
       - ${PROJECT_ROOT:-../public_html}:/var/www
     container_name: php81
+  
+  node20:
+    image: node:20-alpine
+    working_dir: /var/www
+    volumes:
+      - ${PROJECT_ROOT:-../public_html}:/var/www
+    container_name: node20
+    command: tail -f /dev/null
+    restart: always
 
   php82:
     build:
