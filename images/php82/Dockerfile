@@ -63,8 +63,9 @@ RUN chmod +x /usr/bin/install-php-extensions \
         imagick \
         ldap \
         mysqli \
-        pdo_mysql
-
+        pdo_mysql \
+        pgsql \
+        pdo_pgsql
 # Install Composer (robust with signature verification)
 RUN set -eux; \
     EXPECTED_SIGNATURE=$(curl -fsSL https://composer.github.io/installer.sig); \
