@@ -44,6 +44,15 @@ services:
     command: tail -f /dev/null
     restart: always
 
+  node22:
+    image: node:22-alpine
+    working_dir: /var/www
+    volumes:
+      - ${PROJECT_ROOT:-../public_html}:/var/www
+    container_name: node22
+    command: tail -f /dev/null
+    restart: always
+
   php82:
     build:
       context: .
