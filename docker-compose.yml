@@ -34,7 +34,7 @@ services:
     volumes:
       - ${PROJECT_ROOT:-../public_html}:/var/www
     container_name: php81
-  
+
   node20:
     image: node:20-alpine
     working_dir: /var/www
