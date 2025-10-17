@@ -148,4 +148,13 @@ services:
     restart: always
     container_name: dozzle
 
+  mongodb:
+    image: mongo:latest
+    container_name: mongodb
+    ports:
+      - "${MONGODB_PORT:-27017}:27017"
+    volumes:
+      - ./mongo_data:/data/db
+    restart: always
+
 name: docker-laragon
