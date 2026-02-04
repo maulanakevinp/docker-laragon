@@ -13,11 +13,21 @@ services:
       - ./certs:/etc/nginx/certs
     command: /bin/sh -c "nginx -g 'daemon off;'"
     depends_on:
+      - php74
       - php80
       - php81
       - php82
     container_name: nginx
 
+  php74:
+    build:
+      context: .
+      dockerfile: images/php74/Dockerfile
+    restart: always
+    volumes:
+      - ${PROJECT_ROOT:-../public_html}:/var/www
+    container_name: php74
+    
   php80:
     build:
       context: .
@@ -36,6 +46,16 @@ services:
       - ${PROJECT_ROOT:-../public_html}:/var/www
     container_name: php81
 
+  php82:
+    build:
+      context: .
+      dockerfile: images/php82/Dockerfile
+    restart: always
+    volumes:
+      - ${PROJECT_ROOT:-../public_html}:/var/www
+      - ./images/php82/conf.d/uploads.ini:/usr/local/etc/php/conf.d/uploads.ini
+    container_name: php82
+
   node20:
     image: node:20-alpine
     working_dir: /var/www
@@ -53,15 +73,6 @@ services:
     container_name: node22
     command: tail -f /dev/null
     restart: always
-
-  php82:
-    build:
-      context: .
-      dockerfile: images/php82/Dockerfile
-    restart: always
-    volumes:
-      - ${PROJECT_ROOT:-../public_html}:/var/www
-    container_name: php82
 
   mysql:
     image: mysql:5.7
