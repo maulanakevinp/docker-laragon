@@ -28,6 +28,9 @@ services:
     volumes:
       - ${PROJECT_ROOT:-../public_html}:/var/www
     container_name: php74
+    dns:
+      - 8.8.8.8
+      - 1.1.1.1
     
   php80:
     build:
@@ -37,6 +40,9 @@ services:
     volumes:
       - ${PROJECT_ROOT:-../public_html}:/var/www
     container_name: php80
+    dns:
+      - 8.8.8.8
+      - 1.1.1.1
 
   php81:
     build:
@@ -46,6 +52,9 @@ services:
     volumes:
       - ${PROJECT_ROOT:-../public_html}:/var/www
     container_name: php81
+    dns:
+      - 8.8.8.8
+      - 1.1.1.1
 
   php82:
     build:
@@ -57,6 +66,9 @@ services:
       - ./images/php82/conf.d/uploads.ini:/usr/local/etc/php/conf.d/uploads.ini
       - ./images/php82/conf.d/zz-www.conf:/usr/local/etc/php-fpm.d/zz-www.conf
     container_name: php82
+    dns:
+      - 8.8.8.8
+      - 1.1.1.1
 
   php83:
     build:
@@ -68,6 +80,9 @@ services:
       - ./images/php83/conf.d/uploads.ini:/usr/local/etc/php/conf.d/uploads.ini
       - ./images/php83/conf.d/zz-www.conf:/usr/local/etc/php-fpm.d/zz-www.conf
     container_name: php83
+    dns:
+      - 8.8.8.8
+      - 1.1.1.1
 
   node20:
     image: node:20-alpine
@@ -100,7 +115,7 @@ services:
       - "${MYSQL_PORT:-3306}:3306"
     container_name: mysql
 
-  mssql:
+  sqlserver:
     image: mcr.microsoft.com/mssql/server
     container_name: sqlserver
     ports:
@@ -124,6 +139,10 @@ services:
     volumes:
       - ./pg_data:/var/lib/postgresql/data
     restart: always
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-postgres} -d ${POSTGRES_DB:-postgres}"]
+      timeout: 20s
+      retries: 10
 
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
