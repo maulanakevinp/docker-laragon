@@ -5,6 +5,9 @@ ENV ACCEPT_EULA=Y
 # Install system dependencies
 RUN apt-get update \
     && apt-get install -y \
+        git \
+        zip \
+        unzip \
         apt-transport-https \
         gnupg2 \
         libpng-dev \
@@ -20,22 +23,19 @@ RUN apt-get update \
         libxslt1-dev \
         zlib1g-dev \
         libcurl4-openssl-dev \
-        libpng-dev \
         libwebp-dev \
         libfreetype6-dev \
         libjpeg62-turbo-dev \
-        libmcrypt-dev \
         libpq-dev \
         unixodbc-dev \
         curl \
-        gnupg \
     && rm -rf /var/lib/apt/lists/*
 
 # Install Microsoft ODBC Driver for SQL Server (modern keyring-based repo config)
 RUN set -eux; \
     mkdir -p /etc/apt/keyrings; \
     apt-get update; \
-    apt-get install -y --no-install-recommends gnupg2 ca-certificates curl; \
+    apt-get install -y --no-install-recommends ca-certificates curl; \
     curl -fsSL https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor -o /etc/apt/keyrings/microsoft.gpg; \
     chmod 0644 /etc/apt/keyrings/microsoft.gpg; \
     echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/microsoft.gpg] https://packages.microsoft.com/debian/12/prod bookworm main" > /etc/apt/sources.list.d/mssql-release.list; \
