@@ -12,6 +12,7 @@ services:
       - ${PROJECT_ROOT:-../public_html}:/var/www
       - ./certs:/etc/nginx/certs
     command: /bin/sh -c "nginx -g 'daemon off;'"
+    mem_limit: 64m
     depends_on:
       - php74
       - php80
@@ -80,6 +81,7 @@ services:
       - ./images/php83/conf.d/uploads.ini:/usr/local/etc/php/conf.d/uploads.ini
       - ./images/php83/conf.d/zz-www.conf:/usr/local/etc/php-fpm.d/zz-www.conf
     container_name: php83
+    mem_limit: 512m
     dns:
       - 8.8.8.8
       - 1.1.1.1
@@ -123,6 +125,8 @@ services:
     environment:
       ACCEPT_EULA: "Y"
       SA_PASSWORD: "${SA_PASSWORD:-YouShallNotP4ss!}"
+      MSSQL_MEMORY_LIMIT_MB: 2048
+    mem_limit: 2.5g
     volumes:
       - ./mssql_data:/var/opt/mssql
     restart: always
